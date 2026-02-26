@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap");
+
+* { box-sizing: border-box; }
+
+body {
+  color: #111827;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f0f0fb; }
+::-webkit-scrollbar-thumb { background: #c7c7e8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a5b4fc; }
+
+.arabic {
+  font-family: "Noto Sans Arabic", sans-serif;
+  direction: rtl;
+}
+
+.sound-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: #4f46e5;
+  transform-origin: bottom;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 231, 240, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.04), 0 1px 2px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08), 0 2px 4px rgba(0,0,0,0.04);
+  border-color: rgba(199, 199, 232, 0.9);
+}
+
+@keyframes ping-indigo {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.ping-indigo { animation: ping-indigo 1.6s ease-out infinite; }
