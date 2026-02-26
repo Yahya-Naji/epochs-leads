@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64" fill="#4f46e5">
+  <!-- Head -->
+  <ellipse cx="40" cy="14" rx="10" ry="11" transform="rotate(-10 40 14)" />
+  <!-- Hooked beak -->
+  <path d="M49 10 C54 10 56 13 53 16 C51 17 49 16 49 16 Z" />
+  <!-- Eye ring -->
+  <circle cx="43" cy="11" r="2.5" fill="white" />
+  <circle cx="43.5" cy="11" r="1.2" fill="#1e1b4b" />
+  <!-- Neck to body -->
+  <path d="M33 20 C28 24 24 30 23 38 C22 44 25 50 28 54 L36 54 C34 50 33 44 34 38 C35 32 38 26 42 22 C40 20 37 19 33 20 Z" />
+  <!-- Wing -->
+  <path d="M30 30 C20 28 10 24 4 16 C8 22 14 30 20 36 C24 40 28 42 30 42 C30 38 30 34 30 30 Z" />
+  <!-- Tail feathers -->
+  <path d="M26 54 C22 58 18 62 16 63 C20 62 24 59 28 57 Z" />
+  <path d="M30 54 C28 59 27 62 26 64 C28 62 30 59 32 56 Z" />
+  <path d="M34 54 C36 59 38 62 40 63 C37 61 34 58 33 55 Z" />
+</svg>
