@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Phone, PhoneOff, Mic, MicOff, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buildAssistantConfig } from "@/lib/vapi-config";
 
 export type CallMode = "web" | "phone";
 type CallState = "idle" | "connecting" | "active" | "ended" | "error";
@@ -56,7 +55,6 @@ export default function CallPanel({ onLeadSaved }: { onLeadSaved?: () => void })
   const [messages, setMessages] = useState<LiveMessage[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID ?? null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vapiRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -98,13 +96,19 @@ export default function CallPanel({ onLeadSaved }: { onLeadSaved?: () => void })
     setErrorMsg(""); setMessages([]); setCallState("connecting");
     try {
       const vapi = await initVapi();
-      if (assistantId) { await vapi.start(assistantId); }
-      else { await vapi.start(buildAssistantConfig()); }
+      // Use assistantId from dashboard + override the model/prompt with our updated version
+      const res = await fetch("/api/assistant-config");
+      const config = await res.json();
+      await vapi.start("8a65c7dc-a1c5-4108-8319-b7e5b30905ef", {
+        model: config.model,
+        firstMessage: config.firstMessage,
+      });
     } catch (err) {
+      console.error("[CallPanel] Start call error:", err);
       setErrorMsg(err instanceof Error ? err.message : String(err));
       setCallState("error");
     }
-  }, [initVapi, assistantId]);
+  }, [initVapi]);
 
   const startPhoneCall = useCallback(async () => {
     if (!phoneInput.trim()) return;

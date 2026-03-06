@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { buildOutboundCallPayload } from "@/lib/vapi-config";
+import { buildOutboundCallPayload, buildAssistantConfig } from "@/lib/vapi-config";
 
 // POST /api/calls/initiate
 // Body: { phoneNumber: string }
-// Prefers VAPI_ASSISTANT_ID (persistent assistant) over inline config.
+// Uses VAPI_ASSISTANT_ID with model override, or falls back to full inline config.
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -23,19 +23,20 @@ export async function POST(request: Request) {
       );
     }
 
-    // Use persistent assistant ID if available, otherwise fall back to inline config
     let payload: Record<string, unknown>;
     const assistantId = process.env.VAPI_ASSISTANT_ID;
 
     if (assistantId) {
-      // Clean — just reference the assistant by ID
+      const config = buildAssistantConfig();
       payload = {
         phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
         customer: { number: phoneNumber },
         assistantId,
+        assistantOverrides: {
+          model: config.model,
+        },
       };
     } else {
-      // Fallback: send full inline config (slower, prompt sent on every call)
       payload = buildOutboundCallPayload(phoneNumber);
     }
 
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("[VAPI call error]", response.status, errorBody);
+      console.error("[calls/initiate]", response.status, errorBody);
       return NextResponse.json(
         { error: `VAPI error: ${response.status}`, detail: errorBody },
         { status: response.status }
@@ -61,11 +62,10 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       callId: data.id,
-      usedAssistantId: !!assistantId,
       call: data,
     });
   } catch (error) {
-    console.error("[POST /api/calls/initiate]", error);
+    console.error("[calls/initiate]", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -10,6 +10,7 @@ import {
   Database,
   FlaskConical,
   ArrowLeft,
+  BookOpen,
 } from "lucide-react";
 import StatsCards from "@/components/StatsCards";
 import CallPanel from "@/components/CallPanel";
@@ -215,6 +216,14 @@ export default function DashboardPage() {
                 {saveTest === "fail" && "Save Failed"}
               </button>
 
+              <Link
+                href="/knowledge-base"
+                title="Knowledge Base"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border bg-surface-elevated border-surface-border text-ink-secondary text-xs font-medium hover:border-primary/40 hover:text-primary transition-all"
+              >
+                <BookOpen className="w-3 h-3" />
+                <span className="hidden sm:inline">Knowledge Base</span>
+              </Link>
               <button className="p-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-elevated transition-all">
                 <Settings className="w-4 h-4" />
               </button>
