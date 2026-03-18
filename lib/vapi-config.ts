@@ -20,11 +20,12 @@ export function buildAssistantConfig() {
       similarityBoost: 0.75,
       style: 0.3,
       useSpeakerBoost: true,
+      optimizeStreamingLatency: 4,
     },
 
     model: {
       provider: "openai" as const,
-      model: "gpt-4o",
+      model: "gpt-4.1-mini",
       messages: [
         {
           role: "system" as const,
@@ -42,6 +43,13 @@ export function buildAssistantConfig() {
     endCallFunctionEnabled: true,
     endCallMessage:
       "تم رفع ملفك، انتظر تواصل المستشار المالي بأقرب وقت، شكراً جزيلاً على وقتك، السلام عليكم",
+
+    startSpeakingPlan: {
+      waitSeconds: 0.7,
+      smartEndpointingPlan: {
+        provider: "vapi",
+      },
+    },
 
     silenceTimeoutSeconds: 90,
     maxDurationSeconds: 600,

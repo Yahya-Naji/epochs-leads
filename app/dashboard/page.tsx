@@ -123,8 +123,6 @@ export default function DashboardPage() {
   useEffect(() => {
     testAirtable();
     refresh();
-    const id = setInterval(refresh, 30_000);
-    return () => clearInterval(id);
   }, [refresh, testAirtable]);
 
   return (
