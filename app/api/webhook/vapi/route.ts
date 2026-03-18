@@ -15,6 +15,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
+    console.log("[VAPI Webhook] End-of-call analysis:", JSON.stringify({ analysis, artifact: { transcript: artifact?.transcript?.slice(0, 200) } }));
+
     const structured = analysis?.structuredData ?? {};
     const summary = analysis?.summary ?? "";
     const transcript = artifact?.transcript ?? "";
@@ -22,14 +24,14 @@ export async function POST(request: Request) {
     const phone = call?.customer?.number ?? call?.phoneNumber ?? "unknown";
 
     const lead: Omit<Lead, "id" | "createdAt"> = {
-      fullName: structured.fullName ?? "Unknown",
+      fullName: structured.fullName ?? "غير معروف",
       phone,
       age: structured.age ?? undefined,
-      jobTitle: structured.jobTitle ?? "",
+      jobTitle: structured.jobTitle ?? "غير محدد",
       citizenship: structured.citizenship ?? "غير محدد",
       isInterested: structured.isInterested ?? false,
       investmentAmountReady: structured.investmentAmountReady ?? false,
-      preferredContactTime: structured.preferredContactTime ?? "",
+      preferredContactTime: structured.preferredContactTime ?? "غير محدد",
       callOutcome: structured.callOutcome ?? "no_answer",
       status: mapOutcomeToStatus(structured.callOutcome),
       callDate: new Date().toISOString().split("T")[0],
