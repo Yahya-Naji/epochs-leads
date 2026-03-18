@@ -60,7 +60,10 @@ export default function CallPanel({ onLeadSaved }: { onLeadSaved?: () => void })
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = messagesEndRef.current;
+    if (el?.parentElement) {
+      el.parentElement.scrollTop = el.parentElement.scrollHeight;
+    }
   }, [messages]);
 
   const initVapi = useCallback(async () => {
@@ -99,9 +102,14 @@ export default function CallPanel({ onLeadSaved }: { onLeadSaved?: () => void })
       // Use assistantId from dashboard + override the model/prompt with our updated version
       const res = await fetch("/api/assistant-config");
       const config = await res.json();
-      await vapi.start("8a65c7dc-a1c5-4108-8319-b7e5b30905ef", {
+      const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+      if (!assistantId) throw new Error("NEXT_PUBLIC_VAPI_ASSISTANT_ID is not set");
+      await vapi.start(assistantId, {
         model: config.model,
+        voice: config.voice,
         firstMessage: config.firstMessage,
+        analysisPlan: config.analysisPlan,
+        startSpeakingPlan: config.startSpeakingPlan,
       });
     } catch (err) {
       console.error("[CallPanel] Start call error:", err);

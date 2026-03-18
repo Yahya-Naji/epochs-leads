@@ -11,6 +11,8 @@ export async function GET() {
     voice: full.voice,
     firstMessage: full.firstMessage,
     maxDurationSeconds: full.maxDurationSeconds,
+    analysisPlan: full.analysisPlan,
+    startSpeakingPlan: full.startSpeakingPlan,
   };
 
   return NextResponse.json(webConfig);
