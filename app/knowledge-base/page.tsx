@@ -166,7 +166,7 @@ export default function KnowledgeBasePage() {
           <div>
             <h1 className="text-xl font-bold text-ink">Agent Knowledge Base</h1>
             <p className="text-sm text-ink-muted mt-1">
-              Q&A pairs injected into Sara&apos;s system prompt. {entries.length} entries total.
+              Q&A pairs injected into Nora&apos;s system prompt. {entries.length} entries total.
             </p>
           </div>
           {/* Search */}
@@ -205,7 +205,7 @@ export default function KnowledgeBasePage() {
             <p className="text-xs text-ink-muted mt-1">
               {search
                 ? "Try a different search term"
-                : "Add Q&A pairs to train Sara on common questions"}
+                : "Add Q&A pairs to train Nora on common questions"}
             </p>
             {!search && (
               <button
@@ -242,17 +242,11 @@ export default function KnowledgeBasePage() {
                       <MessageCircleQuestion className="w-4 h-4 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p
-                        className="text-sm font-semibold text-ink leading-relaxed"
-                        dir="rtl"
-                      >
+                      <p className="text-sm font-semibold text-ink leading-relaxed">
                         {entry.question}
                       </p>
                       {!isExpanded && (
-                        <p
-                          className="text-xs text-ink-muted mt-1 truncate"
-                          dir="rtl"
-                        >
+                        <p className="text-xs text-ink-muted mt-1 truncate">
                           {entry.answer}
                         </p>
                       )}
@@ -273,10 +267,7 @@ export default function KnowledgeBasePage() {
                         <p className="text-xs font-medium text-ink-muted mb-1.5">
                           Answer
                         </p>
-                        <p
-                          className="text-sm text-ink leading-relaxed"
-                          dir="rtl"
-                        >
+                        <p className="text-sm text-ink leading-relaxed">
                           {entry.answer}
                         </p>
                       </div>
@@ -340,7 +331,7 @@ export default function KnowledgeBasePage() {
           <div className="flex items-center gap-2 text-primary">
             <LeadsLogo size={14} />
             <span className="font-medium text-ink-muted">
-              Epochs Lead &copy; {new Date().getFullYear()}
+              Epochs Optometry &copy; {new Date().getFullYear()}
             </span>
           </div>
           <span>{entries.length} Q&A entries</span>
@@ -375,27 +366,25 @@ export default function KnowledgeBasePage() {
             <div className="px-6 py-5 space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-ink mb-1.5">
-                  Question (Arabic)
+                  Question
                 </label>
                 <textarea
                   value={formQuestion}
                   onChange={(e) => setFormQuestion(e.target.value)}
-                  placeholder="مثال: ما هي شروط الاستثمار؟"
+                  placeholder="e.g. How long does an eye exam take?"
                   rows={2}
-                  dir="rtl"
                   className="w-full px-4 py-3 text-sm bg-surface-elevated border border-surface-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all resize-none"
                 />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-ink mb-1.5">
-                  Answer (Arabic)
+                  Answer
                 </label>
                 <textarea
                   value={formAnswer}
                   onChange={(e) => setFormAnswer(e.target.value)}
-                  placeholder="الإجابة التي ستقولها سارة للعميل..."
+                  placeholder="What Nora should say to the patient..."
                   rows={4}
-                  dir="rtl"
                   className="w-full px-4 py-3 text-sm bg-surface-elevated border border-surface-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all resize-none"
                 />
               </div>

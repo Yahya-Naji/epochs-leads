@@ -34,8 +34,8 @@ export function buildKnowledgeBaseBlock(): string {
   if (entries.length === 0) return "";
 
   const lines = entries
-    .map((e, i) => `${i + 1}. إذا سأل العميل: "${e.question}"\n   أجيبي: "${e.answer}"`)
+    .map((e, i) => `${i + 1}. If the caller asks: "${e.question}"\n   Answer: "${e.answer}"`)
     .join("\n");
 
-  return `\n\n## قاعدة المعرفة - أسئلة وأجوبة إضافية\nإذا سألك العميل أي من هذه الأسئلة أو ما يشبهها أجيبي بالإجابة المحددة:\n${lines}`;
+  return `\n\n## Knowledge base — additional Q&A\nIf the caller asks any of these (or similar) questions, respond using the matching answer:\n${lines}`;
 }

@@ -1,4 +1,12 @@
-export default function LeadsLogo({ size = 28, className = "" }: { size?: number; className?: string }) {
+// Eye-themed logo for Epochs Optometry.
+// Keeping the export name "LeadsLogo" to avoid touching every import.
+export default function LeadsLogo({
+  size = 28,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
   return (
     <svg
       width={size}
@@ -6,28 +14,19 @@ export default function LeadsLogo({ size = 28, className = "" }: { size?: number
       viewBox="0 0 32 32"
       fill="none"
       className={className}
-      aria-label="Epochs Lead"
+      aria-label="Epochs Optometry"
     >
-      {/* Headset arc */}
+      {/* Outer eye shape */}
       <path
-        d="M6 16C6 10.477 10.477 6 16 6C21.523 6 26 10.477 26 16"
-        stroke="currentColor"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-      />
-      {/* Left ear cup */}
-      <rect x="4" y="15" width="4" height="7" rx="2" fill="currentColor" />
-      {/* Right ear cup */}
-      <rect x="24" y="15" width="4" height="7" rx="2" fill="currentColor" />
-      {/* Mic boom */}
-      <path
-        d="M8 22 C8 25 11 27 14 27"
+        d="M2.5 16C5.5 9 10.5 5 16 5C21.5 5 26.5 9 29.5 16C26.5 23 21.5 27 16 27C10.5 27 5.5 23 2.5 16Z"
         stroke="currentColor"
         strokeWidth="2"
-        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      {/* Mic dot */}
-      <circle cx="14.5" cy="27" r="1.5" fill="currentColor" />
+      {/* Iris */}
+      <circle cx="16" cy="16" r="5" fill="currentColor" />
+      {/* Pupil highlight */}
+      <circle cx="14" cy="14" r="1.4" fill="white" />
     </svg>
   );
 }

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Phone,
-  BrainCircuit,
-  Globe,
+  BellRing,
+  CalendarCheck,
   ShieldCheck,
   ArrowRight,
   Mic,
@@ -54,31 +54,31 @@ const slideIn = (dir: "left" | "right") => ({
 
 const features = [
   {
-    icon: Phone,
-    title: "Natural Voice Calls",
+    icon: BellRing,
+    title: "Appointment Reminders",
     description:
-      "AI agent makes and receives calls in fluent Arabic, handling objections and follow-ups like a seasoned rep.",
+      "Outbound reminder calls the day before each exam. The AI confirms, reschedules, or cancels — and flags no-shows for follow-up.",
     gradient: "from-indigo-500 to-violet-500",
   },
   {
-    icon: BrainCircuit,
-    title: "Intelligent Qualification",
+    icon: CalendarCheck,
+    title: "Booking & Rescheduling",
     description:
-      "Extracts name, age, job title, citizenship, and investment readiness — all structured automatically.",
+      "Patients can call and book a routine exam, contact-lens fitting, or follow-up — the agent collects details and offers open slots.",
     gradient: "from-violet-500 to-purple-500",
   },
   {
-    icon: Globe,
-    title: "24/7 Availability",
+    icon: ShieldCheck,
+    title: "Insurance Coverage Checks",
     description:
-      "Never miss a lead. Your AI agent works around the clock with consistent quality and zero fatigue.",
+      "Capture carrier, member ID, and group number on the call. The team gets a clean ticket to verify VSP, EyeMed, Davis, and more.",
     gradient: "from-purple-500 to-fuchsia-500",
   },
   {
-    icon: ShieldCheck,
-    title: "CRM Auto-Sync",
+    icon: Phone,
+    title: "Natural Voice, Sub-Second Latency",
     description:
-      "Every call outcome, transcript, and recording is saved to Airtable in real-time for your team.",
+      "Calls sound like a real receptionist — warm, calm, and patient. Never on hold, never on lunch.",
     gradient: "from-fuchsia-500 to-pink-500",
   },
 ];
@@ -87,33 +87,33 @@ const howItWorks = [
   {
     step: "01",
     icon: Mic,
-    title: "AI Makes the Call",
+    title: "Pick a Workflow",
     description:
-      "Your voice agent dials prospects using a natural Arabic voice, following a customizable 7-step call script.",
+      "Reminder, booking, or insurance check — each runs a tailored script with the right questions and tone.",
   },
   {
     step: "02",
     icon: Users,
-    title: "Qualifies the Lead",
+    title: "AI Talks to the Patient",
     description:
-      "Collects key data — name, age, job, citizenship, investment readiness — through a conversational flow.",
+      "The agent handles the call end to end, capturing name, date of birth, insurance, and the chosen time slot.",
   },
   {
     step: "03",
     icon: BarChart3,
-    title: "Syncs to Your CRM",
+    title: "Hand-Off to Your Team",
     description:
-      "Every detail, transcript, and call recording is instantly pushed to your Airtable dashboard.",
+      "Structured notes, a full transcript, and the recording land in your dashboard — ready for the front desk to action.",
   },
 ];
 
 const metrics = [
   { value: "0.8s", label: "Average Latency", icon: Clock },
-  { value: "98%", label: "Call Completion Rate", icon: Phone },
-  { value: "500+", label: "Leads Qualified", icon: Users },
-  { value: "24/7", label: "Always Available", icon: Globe },
-  { value: "6", label: "Data Points Per Call", icon: BarChart3 },
-  { value: "100%", label: "Automated Pipeline", icon: Sparkles },
+  { value: "98%", label: "Call Completion", icon: Phone },
+  { value: "3", label: "Workflows Live", icon: Sparkles },
+  { value: "24/7", label: "Always Available", icon: CheckCircle2 },
+  { value: "12", label: "Data Points Per Call", icon: BarChart3 },
+  { value: "100%", label: "Auto-Logged", icon: Users },
 ];
 
 /* ── Component ────────────────────────────────────────────────────────── */
@@ -139,13 +139,13 @@ export default function LandingPage() {
           >
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-xs font-semibold text-indigo-600">
               <Sparkles className="h-3.5 w-3.5" />
-              Core Features
+              Built for Optometry
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-ink md:text-5xl">
-              Everything you need
+              Everything the front desk dreads
             </h2>
             <p className="mt-4 text-lg text-ink-secondary max-w-2xl mx-auto">
-              AI-powered features to automate your entire lead generation pipeline from first call to CRM entry.
+              Reminders, bookings, and insurance lookups — handled in a natural voice so your team can focus on patients in the chair.
             </p>
           </motion.div>
 
@@ -194,10 +194,10 @@ export default function LandingPage() {
               How It Works
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-ink md:text-5xl">
-              Three steps to autopilot
+              Three steps, fully hands-off
             </h2>
             <p className="mt-4 text-lg text-ink-secondary max-w-2xl mx-auto">
-              Set up your voice agent in minutes and let it handle the rest.
+              Connect your scheduler, pick a workflow, and let the AI handle the calls.
             </p>
           </motion.div>
 
@@ -261,10 +261,10 @@ export default function LandingPage() {
               By the Numbers
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
-              Built for performance
+              Built for clinic-grade performance
             </h2>
             <p className="mt-4 text-lg text-white/60 max-w-2xl mx-auto">
-              Real metrics from real calls. Our AI delivers enterprise-grade reliability at startup speed.
+              Real numbers from real calls — your front desk just got a tireless teammate.
             </p>
           </motion.div>
 
@@ -315,10 +315,10 @@ export default function LandingPage() {
             <Phone className="w-10 h-10 text-white" />
           </motion.div>
           <h2 className="text-3xl font-bold tracking-tight text-ink md:text-5xl">
-            Ready to automate your calls?
+            Ready to give your front desk a break?
           </h2>
           <p className="mt-4 text-lg text-ink-secondary max-w-xl mx-auto">
-            Start qualifying leads on autopilot. No coding required — just connect your CRM and let the AI handle the rest.
+            Try a live demo call right now. Pick reminder, booking, or insurance — and hear what your patients will hear.
           </p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -331,7 +331,7 @@ export default function LandingPage() {
               href="/dashboard"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-base font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/30 hover:from-indigo-600 hover:to-violet-600 transition-all hover:scale-105 active:scale-95"
             >
-              Try for Free <ArrowRight className="h-4 w-4" />
+              Start a Demo Call <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/dashboard"
@@ -349,12 +349,12 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <LeadsLogo size={14} className="text-primary" />
             <span className="font-medium">
-              Epochs Lead &copy; {new Date().getFullYear()}
+              Epochs Optometry &copy; {new Date().getFullYear()}
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <Database className="w-3 h-3" />
-            <span>Powered by VAPI · Airtable</span>
+            <span>Powered by VAPI · ElevenLabs · GPT-4</span>
           </div>
         </div>
       </footer>
