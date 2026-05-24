@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 export type CallChannel = "web" | "phone";
 export type CallMode = "reminder" | "booking" | "insurance";
+export type Language = "en" | "ar" | "es";
 type CallState = "idle" | "connecting" | "active" | "ended" | "error";
 interface LiveMessage {
   role: "agent" | "user";
@@ -46,6 +47,12 @@ const MODES: {
     desc: "Verify vision coverage",
     icon: ShieldCheck,
   },
+];
+
+const LANGUAGES: { id: Language; label: string; native: string; flag: string }[] = [
+  { id: "en", label: "English", native: "English", flag: "🇺🇸" },
+  { id: "ar", label: "Arabic", native: "العربية", flag: "🇸🇦" },
+  { id: "es", label: "Spanish", native: "Español", flag: "🇪🇸" },
 ];
 
 // ── Sound Wave ────────────────────────────────────────────────────────────────
@@ -101,6 +108,7 @@ export default function CallPanel({
 }) {
   const [channel, setChannel] = useState<CallChannel>("web");
   const [mode, setMode] = useState<CallMode>("booking");
+  const [language, setLanguage] = useState<Language>("en");
   const [phoneInput, setPhoneInput] = useState("");
   const [callState, setCallState] = useState<CallState>("idle");
   const [isMuted, setIsMuted] = useState(false);
@@ -156,15 +164,21 @@ export default function CallPanel({
     setCallState("connecting");
     try {
       const vapi = await initVapi();
-      const res = await fetch(`/api/assistant-config?mode=${mode}`);
+      const res = await fetch(
+        `/api/assistant-config?mode=${mode}&language=${language}`,
+      );
       const config = await res.json();
       const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
       if (!assistantId)
         throw new Error("NEXT_PUBLIC_VAPI_ASSISTANT_ID is not set");
+      // Pass transcriber + voice + model so the assistant runs in the
+      // selected language end-to-end (model + TTS + STT).
       await vapi.start(assistantId, {
         model: config.model,
         voice: config.voice,
+        transcriber: config.transcriber,
         firstMessage: config.firstMessage,
+        endCallMessage: config.endCallMessage,
         analysisPlan: config.analysisPlan,
         startSpeakingPlan: config.startSpeakingPlan,
       });
@@ -173,7 +187,7 @@ export default function CallPanel({
       setErrorMsg(err instanceof Error ? err.message : String(err));
       setCallState("error");
     }
-  }, [initVapi, mode]);
+  }, [initVapi, mode, language]);
 
   const startPhoneCall = useCallback(async () => {
     if (!phoneInput.trim()) return;
@@ -183,7 +197,11 @@ export default function CallPanel({
       const res = await fetch("/api/calls/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber: phoneInput.trim(), mode }),
+        body: JSON.stringify({
+          phoneNumber: phoneInput.trim(),
+          mode,
+          language,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed");
@@ -192,7 +210,7 @@ export default function CallPanel({
       setErrorMsg(err instanceof Error ? err.message : String(err));
       setCallState("error");
     }
-  }, [phoneInput, mode]);
+  }, [phoneInput, mode, language]);
 
   const endCall = useCallback(() => {
     if (channel === "web" && vapiRef.current) vapiRef.current.stop();
@@ -210,6 +228,7 @@ export default function CallPanel({
   const isConnecting = callState === "connecting";
   const isBusy = isActive || isConnecting;
   const activeMode = MODES.find((m) => m.id === mode)!;
+  const activeLang = LANGUAGES.find((l) => l.id === language)!;
 
   return (
     <div className="card overflow-hidden">
@@ -241,6 +260,36 @@ export default function CallPanel({
       </div>
 
       <div className="p-5 space-y-5">
+        {/* Language selector */}
+        <div>
+          <p className="text-xs font-medium text-ink-muted uppercase tracking-wider mb-2">
+            Language
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {LANGUAGES.map((l) => {
+              const selected = language === l.id;
+              return (
+                <button
+                  key={l.id}
+                  onClick={() => !isBusy && setLanguage(l.id)}
+                  disabled={isBusy}
+                  className={cn(
+                    "flex items-center justify-center gap-2 py-2 rounded-xl border text-xs font-semibold transition-all",
+                    selected
+                      ? "bg-primary-light border-primary/40 text-primary shadow-sm"
+                      : "bg-surface-elevated border-surface-border text-ink-secondary hover:border-primary/30",
+                    isBusy && "opacity-60 cursor-not-allowed",
+                  )}
+                  dir={l.id === "ar" ? "rtl" : "ltr"}
+                >
+                  <span className="text-base leading-none">{l.flag}</span>
+                  <span>{l.native}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Workflow / mode selector */}
         <div>
           <p className="text-xs font-medium text-ink-muted uppercase tracking-wider mb-2">
@@ -355,10 +404,14 @@ export default function CallPanel({
               {isActive ? (
                 <span className="flex items-center gap-1.5">
                   <SoundWave active={true} />
-                  <span>Running {activeMode.label} flow</span>
+                  <span>
+                    {activeMode.label} · {activeLang.native}
+                  </span>
                 </span>
               ) : (
-                <>AI Front Desk · {activeMode.label}</>
+                <>
+                  AI Front Desk · {activeMode.label} · {activeLang.native}
+                </>
               )}
             </div>
           </div>
@@ -463,7 +516,7 @@ export default function CallPanel({
         {callState === "idle" && (
           <p className="text-xs text-ink-muted leading-relaxed">
             {channel === "web"
-              ? "Browser microphone required. Nora will run the selected workflow in English."
+              ? `Browser microphone required. Nora will run the ${activeMode.label} workflow in ${activeLang.native}.`
               : "Requires a VAPI phone number configured in the dashboard."}
           </p>
         )}

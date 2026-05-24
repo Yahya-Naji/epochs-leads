@@ -1,20 +1,26 @@
 import { NextResponse } from "next/server";
 import { buildOutboundCallPayload, buildAssistantConfig } from "@/lib/vapi-config";
-import type { CallMode } from "@/lib/call-flow";
+import type { CallMode, Language } from "@/lib/call-flow";
 
 // POST /api/calls/initiate
-// Body: { phoneNumber: string, mode?: "reminder" | "booking" | "insurance" }
-// Uses VAPI_ASSISTANT_ID with model override, or falls back to full inline config.
+// Body: { phoneNumber: string, mode?: "reminder"|"booking"|"insurance", language?: "en"|"ar"|"es" }
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { phoneNumber, mode: rawMode } = body as {
+    const {
+      phoneNumber,
+      mode: rawMode,
+      language: rawLang,
+    } = body as {
       phoneNumber: string;
       mode?: string;
+      language?: string;
     };
 
     const mode: CallMode =
       rawMode === "reminder" || rawMode === "insurance" ? rawMode : "booking";
+    const language: Language =
+      rawLang === "ar" || rawLang === "es" ? rawLang : "en";
 
     if (!phoneNumber) {
       return NextResponse.json(
@@ -34,19 +40,22 @@ export async function POST(request: Request) {
     const assistantId = process.env.VAPI_ASSISTANT_ID;
 
     if (assistantId) {
-      const config = buildAssistantConfig(mode);
+      const config = buildAssistantConfig(mode, language);
       payload = {
         phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
         customer: { number: phoneNumber },
         assistantId,
         assistantOverrides: {
           model: config.model,
+          voice: config.voice,
+          transcriber: config.transcriber,
           firstMessage: config.firstMessage,
           endCallMessage: config.endCallMessage,
+          endCallPhrases: config.endCallPhrases,
         },
       };
     } else {
-      payload = buildOutboundCallPayload(phoneNumber, mode);
+      payload = buildOutboundCallPayload(phoneNumber, mode, language);
     }
 
     const response = await fetch("https://api.vapi.ai/call/phone", {
@@ -72,6 +81,7 @@ export async function POST(request: Request) {
       success: true,
       callId: data.id,
       mode,
+      language,
       call: data,
     });
   } catch (error) {
