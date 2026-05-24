@@ -27,13 +27,13 @@ interface Stats {
 }
 
 const FLOW_STEPS = [
-  { icon: "👋", label: "Greeting", desc: "Open with warm intro" },
-  { icon: "🎯", label: "Introduction", desc: "Explain purpose of call" },
-  { icon: "💡", label: "Initiative Brief", desc: "Outline the opportunity" },
-  { icon: "👤", label: "Advisor Handoff", desc: "Introduce licensed advisor" },
-  { icon: "📊", label: "Gauge Interest", desc: "Measure readiness to invest" },
-  { icon: "📋", label: "Data Collection", desc: "Name · Age · Job · Schedule" },
-  { icon: "✅", label: "Confirm & Close", desc: "Summarise & set next step" },
+  { icon: "👋", label: "Greeting", desc: "Warm, on-brand opener" },
+  { icon: "🩺", label: "Identify Need", desc: "Reminder · Booking · Insurance" },
+  { icon: "🧾", label: "Collect Details", desc: "Name · DOB · Phone · Email" },
+  { icon: "📅", label: "Confirm Time Slot", desc: "Offer or confirm appointment" },
+  { icon: "💳", label: "Insurance Check", desc: "Carrier · Member ID · Group" },
+  { icon: "📩", label: "Send Confirmation", desc: "SMS / email follow-up" },
+  { icon: "✅", label: "Wrap Up", desc: "Summarise & close politely" },
 ];
 
 type AirtableStatus = "checking" | "connected" | "error";
@@ -145,7 +145,7 @@ export default function DashboardPage() {
                   <LeadsLogo size={18} />
                 </div>
                 <span className="text-sm font-bold text-ink tracking-tight">
-                  Epochs Lead
+                  Epochs Optometry
                 </span>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
                 {airtableStatus === "checking" && (
                   <Loader2 className="w-3 h-3 animate-spin" />
                 )}
-                Airtable{" "}
+                CRM{" "}
                 {airtableStatus === "connected"
                   ? "Connected"
                   : airtableStatus === "error"
@@ -190,7 +190,7 @@ export default function DashboardPage() {
               <button
                 onClick={testSave}
                 disabled={saveTest === "saving"}
-                title="Create a test lead in Airtable to verify writes work"
+                title="Create a test record in the CRM to verify writes work"
                 className={cn(
                   "hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all",
                   saveTest === "idle" &&
@@ -238,7 +238,7 @@ export default function DashboardPage() {
             <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
             <div>
               <p className="text-sm font-semibold text-red-700">
-                Airtable connection failed
+                CRM connection failed
               </p>
               <p className="text-xs text-red-500 mt-0.5">{airtableError}</p>
             </div>
@@ -268,7 +268,7 @@ export default function DashboardPage() {
                 )}
               >
                 {saveTest === "ok"
-                  ? "Test lead saved to Airtable"
+                  ? "Test record saved to CRM"
                   : "Test save failed"}
               </p>
               <p
@@ -329,10 +329,10 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-semibold text-ink">
-                    سارة (Sara)
+                    Nora
                   </p>
                   <p className="text-xs text-ink-muted">
-                    AI Voice Agent · Arabic
+                    AI Front Desk · English
                   </p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 border border-emerald-200 rounded-full">
@@ -358,12 +358,12 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 text-primary">
             <LeadsLogo size={14} />
             <span className="font-medium text-ink-muted">
-              Epochs Lead &copy; {new Date().getFullYear()}
+              Epochs Optometry &copy; {new Date().getFullYear()}
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <Database className="w-3 h-3" />
-            <span>Powered by VAPI · Airtable</span>
+            <span>Powered by VAPI · ElevenLabs · GPT-4</span>
           </div>
         </div>
       </footer>

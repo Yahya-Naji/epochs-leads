@@ -10,16 +10,17 @@ import {
 } from "lucide-react";
 import LeadsLogo from "./LeadsLogo";
 
+// Optometry / clinic stock imagery
 const heroImages = [
-  "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80",
-  "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=1920&q=80",
-  "https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=1920&q=80",
-  "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1920&q=80",
+  "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=1920&q=80", // eye exam equipment
+  "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1920&q=80", // glasses on display
+  "https://images.unsplash.com/photo-1606206522398-de2eaba47e58?w=1920&q=80", // optometrist with patient
+  "https://images.unsplash.com/photo-1582142306909-195724d33ffc?w=1920&q=80", // close-up of eye
 ];
 
 const stats = [
   { value: "0.8s", label: "Avg Latency" },
-  { value: "98%", label: "Call Success" },
+  { value: "98%", label: "Pickup Rate" },
   { value: "24/7", label: "Availability" },
   { value: "AI", label: "Powered" },
 ];
@@ -41,7 +42,7 @@ export default function HeroBanner() {
         <motion.img
           key={current}
           src={heroImages[current] || heroImages[0]}
-          alt="Call center background"
+          alt="Optometry clinic background"
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
@@ -62,7 +63,7 @@ export default function HeroBanner() {
               <LeadsLogo size={20} className="text-white" />
             </div>
             <span className="text-lg font-bold tracking-tight text-white">
-              Epochs Lead
+              Epochs Optometry
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -76,7 +77,7 @@ export default function HeroBanner() {
               href="/dashboard"
               className="px-4 py-1.5 rounded-lg text-sm bg-white/15 text-white backdrop-blur-md hover:bg-white/25 border border-white/20 transition-all"
             >
-              Get Started
+              Try the Demo
             </Link>
           </div>
         </div>
@@ -97,7 +98,7 @@ export default function HeroBanner() {
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-md"
           >
             <Zap className="h-3.5 w-3.5" />
-            AI-Powered Call Center
+            AI Front Desk for Optometry Clinics
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -105,10 +106,10 @@ export default function HeroBanner() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="text-5xl font-bold leading-tight tracking-tight text-white md:text-7xl"
           >
-            Human-like calls,
+            Never miss a patient,
             <br />
             <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
-              zero hold time
+              never miss a call
             </span>
           </motion.h1>
           <motion.p
@@ -117,9 +118,8 @@ export default function HeroBanner() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70"
           >
-            Our AI voice agent handles inbound &amp; outbound phone calls in natural
-            Arabic, qualifies every lead, and syncs results to your CRM — all
-            with sub-second response times.
+            An AI receptionist that handles appointment reminders, books new exams,
+            and checks vision-insurance coverage — in a natural voice, around the clock.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -131,14 +131,14 @@ export default function HeroBanner() {
               href="/dashboard"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-lg text-base font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/30 hover:from-indigo-600 hover:to-violet-600 transition-all hover:scale-105 active:scale-95"
             >
-              Try for Free <ArrowRight className="h-4 w-4" />
+              Try the Demo <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/dashboard"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-lg text-base font-semibold border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white/20 transition-all hover:scale-105 active:scale-95"
             >
               <Headphones className="h-4 w-4" />
-              Live Demo
+              Hear a Call
             </Link>
           </motion.div>
         </motion.div>

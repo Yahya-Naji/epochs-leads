@@ -1,24 +1,36 @@
 import {
   buildSystemPrompt,
+  buildFirstMessage,
+  buildEndCallMessage,
   structuredDataSchema,
   structuredDataPrompt,
+  type CallMode,
 } from "./call-flow";
 
-const ELEVENLABS_VOICE_ID = "4wf10lgibMnboGJGCLrP";
+// Default English ElevenLabs voice ("Rachel"). Override via env if you have a custom voice.
+const ELEVENLABS_VOICE_ID =
+  process.env.ELEVENLABS_VOICE_ID ?? "21m00Tcm4TlvDq8ikWAM";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Build the VAPI assistant configuration
+// Build the VAPI assistant configuration for a given mode
 // ─────────────────────────────────────────────────────────────────────────────
-export function buildAssistantConfig() {
+export function buildAssistantConfig(mode: CallMode = "booking") {
+  const modeLabel =
+    mode === "reminder"
+      ? "Appointment Reminder"
+      : mode === "insurance"
+        ? "Insurance Check"
+        : "Booking";
+
   return {
-    name: "Lead Gen Agent - Vision 2030",
+    name: `Epochs Optometry · ${modeLabel}`,
 
     voice: {
       provider: "11labs" as const,
       voiceId: ELEVENLABS_VOICE_ID,
-      stability: 0.45,
+      stability: 0.5,
       similarityBoost: 0.75,
-      style: 0.3,
+      style: 0.25,
       useSpeakerBoost: true,
       optimizeStreamingLatency: 4,
     },
@@ -29,38 +41,36 @@ export function buildAssistantConfig() {
       messages: [
         {
           role: "system" as const,
-          content: buildSystemPrompt(),
+          content: buildSystemPrompt(mode),
         },
       ],
-      temperature: 0.6,
+      temperature: 0.5,
       maxTokens: 300,
     },
 
-    firstMessage:
-      "السلام عليكم، معك سارة من قسم التسويق الإلكتروني، تماشياً مع برامج الحكومة ورؤية ألفين وثلاثين، كيف حالك عساك بخير",
+    firstMessage: buildFirstMessage(mode),
 
     recordingEnabled: true,
     endCallFunctionEnabled: true,
-    endCallMessage:
-      "تم رفع ملفك، انتظر تواصل المستشار المالي بأقرب وقت، شكراً جزيلاً على وقتك، السلام عليكم",
+    endCallMessage: buildEndCallMessage(mode),
 
     startSpeakingPlan: {
-      waitSeconds: 0.7,
+      waitSeconds: 0.6,
       smartEndpointingPlan: {
         provider: "vapi",
       },
     },
 
-    silenceTimeoutSeconds: 90,
+    silenceTimeoutSeconds: 60,
     maxDurationSeconds: 600,
 
-    endCallPhrases: ["مع السلامة", "الله يسلمك", "شكراً مع السلامة"],
+    endCallPhrases: ["goodbye", "bye now", "have a great day", "talk soon"],
 
     analysisPlan: {
       structuredDataPrompt,
       structuredDataSchema,
       summaryPrompt:
-        "Summarize this sales call in 2–3 sentences in English. Note the lead's name, interest level, and next steps.",
+        "Summarize this optometry-clinic call in 2–3 sentences. Note the patient's name, what they called about (reminder / booking / insurance check), and the outcome or next step.",
     },
   };
 }
@@ -68,10 +78,13 @@ export function buildAssistantConfig() {
 // ─────────────────────────────────────────────────────────────────────────────
 // Outbound phone call payload (used by POST /api/calls/initiate)
 // ─────────────────────────────────────────────────────────────────────────────
-export function buildOutboundCallPayload(phoneNumber: string) {
+export function buildOutboundCallPayload(
+  phoneNumber: string,
+  mode: CallMode = "booking",
+) {
   return {
     phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
     customer: { number: phoneNumber },
-    assistant: buildAssistantConfig(),
+    assistant: buildAssistantConfig(mode),
   };
 }

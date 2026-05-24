@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Epochs Lead — AI Voice Agent",
+  title: "Epochs Optometry — AI Front Desk",
   description:
-    "Vision 2030 investment lead generation powered by AI voice technology",
+    "Voice AI front desk for optometry clinics: appointment reminders, booking, and insurance coverage checks.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="ltr">
+    <html lang="en" dir="ltr">
       <body>{children}</body>
     </html>
   );

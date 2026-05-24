@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { buildOutboundCallPayload, buildAssistantConfig } from "@/lib/vapi-config";
+import type { CallMode } from "@/lib/call-flow";
 
 // POST /api/calls/initiate
-// Body: { phoneNumber: string }
+// Body: { phoneNumber: string, mode?: "reminder" | "booking" | "insurance" }
 // Uses VAPI_ASSISTANT_ID with model override, or falls back to full inline config.
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { phoneNumber } = body as { phoneNumber: string };
+    const { phoneNumber, mode: rawMode } = body as {
+      phoneNumber: string;
+      mode?: string;
+    };
+
+    const mode: CallMode =
+      rawMode === "reminder" || rawMode === "insurance" ? rawMode : "booking";
 
     if (!phoneNumber) {
       return NextResponse.json(
@@ -27,17 +34,19 @@ export async function POST(request: Request) {
     const assistantId = process.env.VAPI_ASSISTANT_ID;
 
     if (assistantId) {
-      const config = buildAssistantConfig();
+      const config = buildAssistantConfig(mode);
       payload = {
         phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
         customer: { number: phoneNumber },
         assistantId,
         assistantOverrides: {
           model: config.model,
+          firstMessage: config.firstMessage,
+          endCallMessage: config.endCallMessage,
         },
       };
     } else {
-      payload = buildOutboundCallPayload(phoneNumber);
+      payload = buildOutboundCallPayload(phoneNumber, mode);
     }
 
     const response = await fetch("https://api.vapi.ai/call/phone", {
@@ -62,6 +71,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       callId: data.id,
+      mode,
       call: data,
     });
   } catch (error) {
