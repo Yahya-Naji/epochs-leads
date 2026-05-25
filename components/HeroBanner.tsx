@@ -12,10 +12,10 @@ import LeadsLogo from "./LeadsLogo";
 
 // Optometry / clinic stock imagery
 const heroImages = [
-  "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=1920&q=80", // eye exam equipment
-  "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1920&q=80", // glasses on display
+  "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1920&q=80", // glasses on display (first impression)
   "https://images.unsplash.com/photo-1606206522398-de2eaba47e58?w=1920&q=80", // optometrist with patient
   "https://images.unsplash.com/photo-1582142306909-195724d33ffc?w=1920&q=80", // close-up of eye
+  "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=1920&q=80", // eye exam equipment (phoropter)
 ];
 
 const stats = [
